@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:machinavision/screens/handwriting_sc.dart';
-import 'package:machinavision/screens/object_detector_sc.dart';
+import 'package:machinavision/screens/mobilenet_sc.dart';
 import 'package:machinavision/ui_kit.dart' as U;
 
 class MainPanelScreen extends StatelessWidget {
@@ -23,9 +23,9 @@ class MainPanelScreen extends StatelessWidget {
             SizedBox(
               height: 30,
               child: U.Button(
-                label: U.Text('Object Detector'),
+                label: U.Text('MobileNet Object Detector'),
                 onPressed: () =>
-                    Navigator.of(context).pushNamed(ObjectDetectorScreen.route),
+                    Navigator.of(context).pushNamed(MobileNetScreen.route),
               ),
             ),
             const SizedBox(

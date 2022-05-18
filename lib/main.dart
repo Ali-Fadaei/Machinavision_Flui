@@ -2,15 +2,19 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:machinavision/screens/handwriting_sc.dart';
 import 'package:machinavision/screens/main_panel_sc.dart';
-import 'package:machinavision/screens/object_detector_sc.dart';
+import 'package:machinavision/screens/mobilenet_sc.dart';
 import 'package:machinavision/tool_kit.dart' as T;
 
-late List<CameraDescription> cameras;
+List<CameraDescription>? cameras;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  cameras = await availableCameras();
   T.Utilities.initAndroid();
+  try {
+    cameras = await availableCameras();
+  } on CameraException catch (e) {
+    print('Error: $e.code\nError Message: $e.message');
+  }
   runApp(const MyApp());
 }
 
@@ -37,34 +41,31 @@ class MyApp extends StatelessWidget {
         surface: T.Colors.background2,
         onSurface: T.Colors.primary2,
       )),
-      home: MyHomePage(title: 'AI Powered APP'),
+      home: const MainNavigator(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
-  final navigatorKey = GlobalKey<NavigatorState>();
+class MainNavigator extends StatefulWidget {
+  const MainNavigator({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MainNavigator> createState() => _MainNavigatorState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MainNavigatorState extends State<MainNavigator> {
   @override
   Widget build(BuildContext context) {
     return Navigator(
       initialRoute: MainPanelScreen.route,
-      key: widget.navigatorKey,
       onGenerateRoute: (settings) {
         WidgetBuilder builder;
         switch (settings.name) {
           case MainPanelScreen.route:
             builder = (_) => const MainPanelScreen();
             break;
-          case ObjectDetectorScreen.route:
-            builder = (_) => const ObjectDetectorScreen();
+          case MobileNetScreen.route:
+            builder = (_) => const MobileNetScreen();
             break;
           case HandWritingScreen.route:
             builder = (_) => const HandWritingScreen();
