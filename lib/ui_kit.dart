@@ -6,4 +6,4 @@ export 'package:machinavision/ui_kit/header_box.dart';
 export 'package:machinavision/ui_kit/header.dart';
 export 'package:machinavision/ui_kit/tool_tip.dart';
 export 'package:machinavision/ui_kit/drawing_painter.dart';
-export 'package:machinavision/ui_kit/recognizer_box.dart';
+export 'package:machinavision/ui_kit/boundary_box.dart';

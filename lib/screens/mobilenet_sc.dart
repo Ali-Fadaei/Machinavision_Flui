@@ -20,7 +20,6 @@ class _MobileNetScreenState extends State<MobileNetScreen> {
   bool isDetecting = false;
   int startTime = 0;
   int endTime = 0;
-  String resultt = '';
   List<T.MobileNetResult?> result = [];
 
   void loadModel() async {
@@ -53,7 +52,6 @@ class _MobileNetScreenState extends State<MobileNetScreen> {
   void runModelOnCamera(CameraImage image) {
     if (!isDetecting) {
       isDetecting = true;
-      resultt = '';
       result = [];
       startTime = DateTime.now().millisecondsSinceEpoch;
       Tflite.runModelOnFrame(
@@ -66,12 +64,23 @@ class _MobileNetScreenState extends State<MobileNetScreen> {
       ).then((recognitions) {
         endTime = DateTime.now().millisecondsSinceEpoch;
         setState(() {
+          // var temp = recognitions
+          //     ?.map((e) => T.MobileNetResult(
+          //           index: e['index'],
+          //           confidence: e['confidence'],
+          //           label: e['label'],
+          //         ))
+          //     .toList();
+          // print(recognitions.runtimeType);
+          // print(recognitions.runtimeType);
+          // print(recognitions.runtimeType);
+          // print(recognitions.runtimeType);
+          // print(recognitions.runtimeType);
+          // print(recognitions.runtimeType);
           var temp = recognitions
-              ?.map((e) => T.MobileNetResult(
-                    index: e['index'],
-                    confidence: e['confidence'],
-                    label: e['label'],
-                  ))
+              ?.map(
+                (e) => T.MobileNetResult.fromMap(Map.from(e)),
+              )
               .toList();
           result = temp ?? [];
         });
