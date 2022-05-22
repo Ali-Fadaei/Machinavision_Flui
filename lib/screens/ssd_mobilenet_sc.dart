@@ -32,7 +32,7 @@ class _SsdMobileNetScreenState extends State<SsdMobileNetScreen> {
   void initCamera() {
     if (cameras?.isNotEmpty ?? false) {
       cameraController = CameraController(
-        cameras![0],
+        selectedCamera!,
         ResolutionPreset.high,
       );
       cameraController?.initialize().then((value) {

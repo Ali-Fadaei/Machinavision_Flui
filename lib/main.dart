@@ -9,12 +9,15 @@ import 'package:machinavision/screens/tiny_yolo_sc.dart';
 import 'package:machinavision/tool_kit.dart' as T;
 
 List<CameraDescription>? cameras;
+CameraDescription? selectedCamera;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   T.Utilities.initAndroid();
   try {
     cameras = await availableCameras();
+    print(cameras?.toString());
+    selectedCamera = cameras![0];
   } on CameraException catch (e) {
     print('Error: $e.code\nError Message: $e.message');
   }
@@ -31,19 +34,20 @@ class MyApp extends StatelessWidget {
       title: 'MachinaVision',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          colorScheme: ColorScheme(
-        brightness: Brightness.light,
-        primary: T.Colors.primary,
-        onPrimary: T.Colors.white,
-        secondary: T.Colors.secondary,
-        onSecondary: T.Colors.white,
-        error: T.Colors.errorPrimary,
-        onError: T.Colors.errorSecondary,
-        background: T.Colors.background,
-        onBackground: T.Colors.primary2,
-        surface: T.Colors.background2,
-        onSurface: T.Colors.primary2,
-      )),
+        colorScheme: ColorScheme(
+          brightness: Brightness.light,
+          primary: T.Colors.primary,
+          onPrimary: T.Colors.white,
+          secondary: T.Colors.secondary,
+          onSecondary: T.Colors.white,
+          error: T.Colors.errorPrimary,
+          onError: T.Colors.errorSecondary,
+          background: T.Colors.background,
+          onBackground: T.Colors.primary2,
+          surface: T.Colors.background2,
+          onSurface: T.Colors.primary2,
+        ),
+      ),
       home: const MainNavigator(),
     );
   }

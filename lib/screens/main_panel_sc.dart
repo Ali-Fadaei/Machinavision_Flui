@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:machinavision/main.dart';
 import 'package:machinavision/screens/handwriting_sc.dart';
 import 'package:machinavision/screens/mobilenet_sc.dart';
 import 'package:machinavision/screens/posenet_sc.dart';
@@ -6,9 +7,17 @@ import 'package:machinavision/screens/ssd_mobilenet_sc.dart';
 import 'package:machinavision/screens/tiny_yolo_sc.dart';
 import 'package:machinavision/ui_kit.dart' as U;
 
-class MainPanelScreen extends StatelessWidget {
+class MainPanelScreen extends StatefulWidget {
   static const route = '/';
   const MainPanelScreen({Key? key}) : super(key: key);
+
+  @override
+  State<MainPanelScreen> createState() => _MainPanelScreenState();
+}
+
+class _MainPanelScreenState extends State<MainPanelScreen> {
+  String get selectedCameraName =>
+      selectedCamera == cameras![0] ? 'Back Camera' : 'Front Camera';
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +30,7 @@ class MainPanelScreen extends StatelessWidget {
           horizontal: 10,
           vertical: 20,
         ),
-        child: ListView(
+        child: Column(
           children: [
             SizedBox(
               height: 30,
@@ -75,8 +84,21 @@ class MainPanelScreen extends StatelessWidget {
                     Navigator.of(context).pushNamed(HandWritingScreen.route),
               ),
             ),
+            const Spacer(),
+            U.Text('selected Camera: $selectedCameraName'),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.cameraswitch_sharp),
+        onPressed: () {
+          print('cameras?.length');
+          print(cameras?.length);
+          setState(() {
+            selectedCamera =
+                selectedCamera == cameras![0] ? cameras![1] : cameras![0];
+          });
+        },
       ),
     );
   }

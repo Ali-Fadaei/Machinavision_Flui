@@ -30,13 +30,12 @@ class _TinyYoloScreenState extends State<TinyYoloScreen> {
   void initCamera() {
     if (cameras?.isNotEmpty ?? false) {
       cameraController = CameraController(
-        cameras![0],
+        selectedCamera!,
         ResolutionPreset.high,
       );
       cameraController?.initialize().then((value) {
         if (!mounted) return;
         setState(() {});
-
         cameraController?.startImageStream((image) {
           if (!isDetecting) {
             this.image = image;
