@@ -49,7 +49,6 @@ class BoundaryBox extends StatelessWidget {
           h = _h * scaleH;
           if (_y < difH / 2) h -= (difH / 2 - _y) * scaleH;
         }
-
         return Positioned(
           left: math.max(0, x),
           top: math.max(0, y),
@@ -59,14 +58,14 @@ class BoundaryBox extends StatelessWidget {
             padding: const EdgeInsets.only(top: 5.0, left: 5.0),
             decoration: BoxDecoration(
               border: Border.all(
-                color: const Color.fromRGBO(37, 213, 253, 1.0),
+                color: T.Colors.secondary,
                 width: 3.0,
               ),
             ),
             child: Text(
               '${res?.detectedClass} ${((res?.confidenceInClass ?? 0) * 100).toStringAsFixed(0)}%',
-              style: const TextStyle(
-                color: Color.fromRGBO(37, 213, 253, 1.0),
+              style: TextStyle(
+                color: T.Colors.secondary,
                 fontSize: 14.0,
                 fontWeight: FontWeight.bold,
               ),
