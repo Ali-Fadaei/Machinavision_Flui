@@ -53,8 +53,6 @@ class _SsdMobileNetScreenState extends State<SsdMobileNetScreen> {
   void runModelOnCamera(CameraImage image) {
     if (!isDetecting) {
       isDetecting = true;
-      result = [];
-      startTime = DateTime.now().millisecondsSinceEpoch;
       Tflite.detectObjectOnFrame(
         bytesList: image.planes.map((plane) {
           return plane.bytes;
@@ -98,13 +96,31 @@ class _SsdMobileNetScreenState extends State<SsdMobileNetScreen> {
                   child: CameraPreview(cameraController!),
                 )
               : const U.Loading(),
-          U.BoundaryBox(
+          U.BoundaryBox.ssd(
             result,
             math.max(image?.height ?? 1, image?.width ?? 1),
             math.min(image?.height ?? 1, image?.width ?? 1),
             screen.height,
             screen.width,
             T.TrainedModels.ssd,
+          ),
+          Positioned(
+            bottom: 24,
+            left: 50,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Container(
+                  height: 30,
+                  width: screen.width - 80,
+                  color: T.Colors.primary,
+                  child: Center(
+                    child: U.Text(
+                      'SSDMobileNet Object Vision',
+                      textColor: U.TextColor.white,
+                      textSize: U.TextSize.lg,
+                    ),
+                  )),
+            ),
           ),
         ],
       ),

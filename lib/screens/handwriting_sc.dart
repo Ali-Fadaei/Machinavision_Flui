@@ -13,7 +13,7 @@ class HandWritingScreen extends StatefulWidget {
 }
 
 class _RecognizerScreen extends State<HandWritingScreen> {
-  List<Offset> points = [];
+  List<Offset?> points = [];
   T.AppBrain brain = T.AppBrain();
 
   void _cleanDrawing() {
@@ -73,9 +73,9 @@ class _RecognizerScreen extends State<HandWritingScreen> {
                     });
                   },
                   onPanEnd: (details) async {
-                    points.add(Offset.zero);
+                    points.add(null);
                     List predictions =
-                        (await brain.processCanvasPoints(points)) as List;
+                        await brain.processCanvasPoints(points) as List;
                     print(predictions);
                     setState(() {});
                   },

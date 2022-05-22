@@ -12,15 +12,15 @@ class AppBrain {
     Tflite.close();
     try {
       await Tflite.loadModel(
-        model: "assets/converted_mnist_model.tflite",
-        labels: "assets/labels.txt",
+        model: 'assets/mnist_model.tflite',
+        labels: 'assets/labels.txt',
       );
     } on PlatformException {
       print('Failed to load model.');
     }
   }
 
-  Future<Future<List?>> processCanvasPoints(List<Offset> points) async {
+  Future<List?> processCanvasPoints(List<Offset?> points) async {
     // We create an empty canvas 280x280 pixels
     const canvasSizeWithPadding =
         T.Constants.kCanvasSize + (2 * T.Constants.kCanvasInnerOffset);
@@ -48,8 +48,8 @@ class AppBrain {
     for (int i = 0; i < points.length - 1; i++) {
       if (points[i] != null && points[i + 1] != null) {
         canvas.drawLine(
-          points[i] + canvasOffset,
-          points[i + 1] + canvasOffset,
+          points[i]! + canvasOffset,
+          points[i + 1]! + canvasOffset,
           T.Constants.kWhitePaint,
         );
       }

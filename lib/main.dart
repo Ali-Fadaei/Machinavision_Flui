@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:machinavision/screens/handwriting_sc.dart';
 import 'package:machinavision/screens/main_panel_sc.dart';
 import 'package:machinavision/screens/mobilenet_sc.dart';
+import 'package:machinavision/screens/posenet_sc.dart';
 import 'package:machinavision/screens/ssd_mobilenet_sc.dart';
+import 'package:machinavision/screens/tiny_yolo_sc.dart';
 import 'package:machinavision/tool_kit.dart' as T;
 
 List<CameraDescription>? cameras;
@@ -69,6 +71,12 @@ class _MainNavigatorState extends State<MainNavigator> {
             break;
           case SsdMobileNetScreen.route:
             builder = (_) => const SsdMobileNetScreen();
+            break;
+          case TinyYoloScreen.route:
+            builder = (_) => const TinyYoloScreen();
+            break;
+          case PoseNetScreen.route:
+            builder = (_) => const PoseNetScreen();
             break;
           case HandWritingScreen.route:
             builder = (_) => const HandWritingScreen();

@@ -54,8 +54,6 @@ class _MobileNetScreenState extends State<MobileNetScreen> {
   void runModelOnCamera(CameraImage image) {
     if (!isDetecting) {
       isDetecting = true;
-      result = [];
-      startTime = DateTime.now().millisecondsSinceEpoch;
       Tflite.runModelOnFrame(
         bytesList: image.planes.map((plane) {
           return plane.bytes;
@@ -116,7 +114,6 @@ class _MobileNetScreenState extends State<MobileNetScreen> {
               flex: 2,
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(8, 25, 8, 5),
-                // padding: const EdgeInsets.all(25),
                 child: result.isNotEmpty
                     ? _BarChart(mobileNetResult: result)
                     : const U.Loading(sizeFactor: 0.2),

@@ -3,27 +3,40 @@ import 'dart:math' as math;
 import 'package:machinavision/tool_kit.dart' as T;
 
 class BoundaryBox extends StatelessWidget {
-  final List<T.SSDMobileNetResult?> results;
+  final List<T.SSDMobileNetResult?> boundaryResults;
+  final List<dynamic> pointResult;
   final int previewH;
   final int previewW;
   final double screenH;
   final double screenW;
   final String model;
 
-  const BoundaryBox(
-    this.results,
+  const BoundaryBox.ssd(
+    this.boundaryResults,
     this.previewH,
     this.previewW,
     this.screenH,
     this.screenW,
     this.model, {
     Key? key,
-  }) : super(key: key);
+  })  : pointResult = const [],
+        super(key: key);
+
+  const BoundaryBox.point(
+    this.pointResult,
+    this.previewH,
+    this.previewW,
+    this.screenH,
+    this.screenW,
+    this.model, {
+    Key? key,
+  })  : boundaryResults = const [],
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
     List<Widget> _renderBoxes() {
-      return results.map((res) {
+      return boundaryResults.map((res) {
         var _x = res?.rect.x ?? 0.0;
         var _w = res?.rect.w ?? 0.0;
         var _y = res?.rect.y ?? 0.0;
@@ -75,71 +88,52 @@ class BoundaryBox extends StatelessWidget {
       }).toList();
     }
 
-    // List<Widget> _renderStrings() {
-    //   double offset = -10;
-    //   return results.map((re) {
-    //     offset = offset + 14;
-    //     return Positioned(
-    //       left: 10,
-    //       top: offset,
-    //       width: screenW,
-    //       height: screenH,
-    //       child: Text(
-    //         "${res.label} ${(re["confidence"] * 100).toStringAsFixed(0)}%",
-    //         style: const TextStyle(
-    //           color: Color.fromRGBO(37, 213, 253, 1.0),
-    //           fontSize: 14.0,
-    //           fontWeight: FontWeight.bold,
-    //         ),
-    //       ),
-    //     );
-    //   }).toList();
-    // }
+    List<Widget> _renderKeypoints() {
+      var lists = <Widget>[];
+      pointResult.forEach((res) {
+        var list = res?['keypoints'].values.map<Widget>((k) {
+          var _x = k['x'];
+          var _y = k['y'];
+          var scaleW, scaleH, x, y;
 
-    // List<Widget> _renderKeypoints() {
-    //   var lists = <Widget>[];
-    //   results.forEach((res) {
-    //     var list = res?['keypoints'].values.map<Widget>((k) {
-    //       var _x = k['x'];
-    //       var _y = k['y'];
-    //       var scaleW, scaleH, x, y;
+          if (screenH / screenW > previewH / previewW) {
+            scaleW = screenH / previewH * previewW;
+            scaleH = screenH;
+            var difW = (scaleW - screenW) / scaleW;
+            x = (_x - difW / 2) * scaleW;
+            y = _y * scaleH;
+          } else {
+            scaleH = screenW / previewW * previewH;
+            scaleW = screenW;
+            var difH = (scaleH - screenH) / scaleH;
+            x = _x * scaleW;
+            y = (_y - difH / 2) * scaleH;
+          }
+          return Positioned(
+            left: x - 6,
+            top: y - 6,
+            width: 100,
+            height: 12,
+            child: Text(
+              "● ${k["part"]}",
+              style: TextStyle(
+                color: T.Colors.secondary,
+                fontSize: 12.0,
+              ),
+            ),
+          );
+        }).toList();
 
-    //       if (screenH / screenW > previewH / previewW) {
-    //         scaleW = screenH / previewH * previewW;
-    //         scaleH = screenH;
-    //         var difW = (scaleW - screenW) / scaleW;
-    //         x = (_x - difW / 2) * scaleW;
-    //         y = _y * scaleH;
-    //       } else {
-    //         scaleH = screenW / previewW * previewH;
-    //         scaleW = screenW;
-    //         var difH = (scaleH - screenH) / scaleH;
-    //         x = _x * scaleW;
-    //         y = (_y - difH / 2) * scaleH;
-    //       }
-    //       return Positioned(
-    //         left: x - 6,
-    //         top: y - 6,
-    //         width: 100,
-    //         height: 12,
-    //         child: Text(
-    //           "● ${k["part"]}",
-    //           style: const TextStyle(
-    //             color: Color.fromRGBO(37, 213, 253, 1.0),
-    //             fontSize: 12.0,
-    //           ),
-    //         ),
-    //       );
-    //     }).toList();
+        lists.addAll(list);
+      });
 
-    //     lists.addAll(list);
-    //   });
-
-    //   return lists;
-    // }
+      return lists;
+    }
 
     return Stack(
-      children: _renderBoxes(),
+      children: model == T.TrainedModels.posenet
+          ? _renderKeypoints()
+          : _renderBoxes(),
       // return Stack(
       //   children: model == T.TrainedModels.mobilenet
       //       ? _renderStrings()
