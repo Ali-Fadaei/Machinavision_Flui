@@ -5,14 +5,14 @@ import 'package:machinavision/screens/ssd_mobilenet_sc.dart';
 import 'package:machinavision/ui_kit.dart' as U;
 
 class MainPanelScreen extends StatelessWidget {
-  static const route = '/main';
+  static const route = '/';
   const MainPanelScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('AI Powered App'),
+        title: const Text('MachinaVision'),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(

@@ -20,6 +20,7 @@ class _MobileNetScreenState extends State<MobileNetScreen> {
   bool isDetecting = false;
   int startTime = 0;
   int endTime = 0;
+  CameraImage? image;
   List<T.MobileNetResult?> result = [];
 
   void loadModel() async {
@@ -41,6 +42,7 @@ class _MobileNetScreenState extends State<MobileNetScreen> {
 
         cameraController?.startImageStream((image) {
           if (!isDetecting) {
+            this.image = image;
             runModelOnCamera(image);
           }
         });
@@ -62,21 +64,7 @@ class _MobileNetScreenState extends State<MobileNetScreen> {
         imageWidth: image.width,
         numResults: 6,
       ).then((recognitions) {
-        endTime = DateTime.now().millisecondsSinceEpoch;
         setState(() {
-          // var temp = recognitions
-          //     ?.map((e) => T.MobileNetResult(
-          //           index: e['index'],
-          //           confidence: e['confidence'],
-          //           label: e['label'],
-          //         ))
-          //     .toList();
-          // print(recognitions.runtimeType);
-          // print(recognitions.runtimeType);
-          // print(recognitions.runtimeType);
-          // print(recognitions.runtimeType);
-          // print(recognitions.runtimeType);
-          // print(recognitions.runtimeType);
           var temp = recognitions
               ?.map(
                 (e) => T.MobileNetResult.fromMap(Map.from(e)),
@@ -101,25 +89,31 @@ class _MobileNetScreenState extends State<MobileNetScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Size screen = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: const Text('MobileNet Object Detector'),
       ),
       body: Container(
         color: T.Colors.background,
+        width: screen.width,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Expanded(
-              flex: 7,
-              child: cameraController != null
-                  ? AspectRatio(
-                      aspectRatio: 16.0 / 9.0,
-                      child: CameraPreview(cameraController!),
-                    )
-                  : const U.Loading(),
+            const SizedBox(
+              height: 8,
             ),
             Expanded(
-              flex: 3,
+              flex: 8,
+              child: cameraController != null
+                  ? ClipRRect(
+                      child: CameraPreview(cameraController!),
+                      borderRadius: BorderRadius.circular(8),
+                    )
+                  : const U.Loading(sizeFactor: 0.2),
+            ),
+            Expanded(
+              flex: 2,
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(8, 25, 8, 5),
                 // padding: const EdgeInsets.all(25),

@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'AI Powered APP',
+      title: 'MachinaVision',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           colorScheme: ColorScheme(
@@ -58,7 +58,6 @@ class _MainNavigatorState extends State<MainNavigator> {
   @override
   Widget build(BuildContext context) {
     return Navigator(
-      initialRoute: MainPanelScreen.route,
       onGenerateRoute: (settings) {
         WidgetBuilder builder;
         switch (settings.name) {
